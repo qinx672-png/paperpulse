@@ -18,8 +18,21 @@ _DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def _read_key(name):
-    with open(os.path.join(_DIR, name), encoding="utf-8") as f:
-        return f.read().strip()
+    """从环境变量或文件读取 API Key"""
+    # 优先从环境变量读取（用于 Streamlit Cloud）
+    env_name = name.replace(".txt", "").upper()
+    key = os.environ.get(env_name)
+    if key:
+        return key
+
+    # 本地开发从文件读取
+    key_path = os.path.join(_DIR, name)
+    if os.path.exists(key_path):
+        with open(key_path, encoding="utf-8") as f:
+            return f.read().strip()
+
+    # 兜底：返回空字符串，避免崩溃
+    return ""
 
 
 # ---------- 火山方舟：对话模型 ----------
