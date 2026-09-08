@@ -1,53 +1,161 @@
-# 科研文献 AI 助手（RAG Demo）
+# PaperPulse · Your Research Trace Weaver
 
-零基础可跑通的「科研场景 AI 助手」最小产品：上传论文 PDF，即可对文献内容提问。
+🔬 **科研文献 AI 助手** | 让文献精读从 2 小时缩短到 15 分钟
 
-基于 RAG（检索增强生成）：先把论文切块、向量化，提问时检索最相关段落，再让大模型据此回答，做到"有据可查、不瞎编"。
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://paperpulse.streamlit.app)
 
-## 一、环境准备
+---
 
-1. 确认 Python 3.9+：命令行运行 `python --version`（本机已装 3.12.3 ✓）
-2. 安装依赖：
-   ```
-   pip install -r requirements.txt
-   ```
-   如果用 Anaconda：`conda install streamlit pypdf numpy requests`
+## ✨ 核心功能
 
-## 二、申请 API Key（硅基流动）
+### 1. 📄 智能解析
+- 支持 PDF 文献自动解析（PyMuPDF + PaddleOCR 兜底）
+- 结构感知切块（Elsevier 编号风格 + Nature 光秃风格双兼容）
 
-1. 打开 https://siliconflow.cn 注册登录
-2. 控制台 → API 密钥 → 新建密钥，复制
-3. 打开「模型广场」，确认已开通：
-   - 向量化模型：`BAAI/bge-m3`
-   - 对话模型：`deepseek-ai/DeepSeek-V3`（或免费的 `Qwen/Qwen2.5-7B-Instruct`）
-4. 把 Key 填进 `config.py` 的 `API_KEY`
+### 2. 🔍 混合检索
+- **bge-m3** 中文学术语义向量
+- **BM25** 关键词检索
+- **RRF 融合**（Reciprocal Rank Fusion）
+- 召回准确率：84.1%（细节题 94.6% / 图表题 100%）
 
-## 三、运行
+### 3. 🧠 八字段精读档案
+自动生成论文核心要点：
+- 研究意义
+- 领域问题
+- 拟解决问题
+- 研究内容
+- 主要结果
+- 结论
+- 创新点
+- 不足与展望
 
-先测 Key 是否可用：
+### 4. 🗺️ 研究路线图
+- 实体-关系流程图（样品/方法/参数/结果/结论）
+- 自研 SVG/PNG 渲染引擎（支持化学式上下标、双语混排）
+
+### 5. 🕸️ 知识图谱
+跨论文关系网络可视化：
+- 引用关系（代码确定性匹配）
+- 同研究对象/方法/结论关系（LLM 判断 + evidence）
+- pyvis 交互式力导向布局
+
+### 6. 💬 问答溯源
+- 每个回答带原文页码引用
+- 100% 可溯源，杜绝 AI 幻觉
+
+---
+
+## 🎯 五轮评测体系
+
+| 题型 | 题数 | 准确率 | 说明 |
+|------|------|--------|------|
+| 细节题 | 15 | 94.6% | 人名/数据/方法细节 |
+| 图表题 | 12 | 100% | 图表信息提取 |
+| 归纳题 | 10 | 69.5% | 全文总结归纳（行业短板） |
+
+**四模型横向对比**：DeepSeek-V4-Pro / Kimi / 豆包 / GLM-4
+
+**A/B 对照实验**：rerank 配置优化使细节题准确率提升 8.2%
+
+---
+
+## 🚀 快速开始
+
+### 本地运行
+
+```bash
+# 克隆仓库
+git clone https://github.com/qinx672-png/research-ai-assistant.git
+cd research-ai-assistant/v2.0
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 配置 API Key（在 config.py 中）
+# 设置 DeepSeek API Key
+
+# 启动应用
+streamlit run app.py --server.port 8502
 ```
-python test_api.py
+
+访问：http://localhost:8502
+
+### 在线体验
+
+🌐 **Streamlit Cloud**：https://paperpulse.streamlit.app
+
+🤗 **Hugging Face**：https://huggingface.co/spaces/qinxiao/paperpulse
+
+---
+
+## 🛠️ 技术栈
+
+| 层 | 技术 |
+|----|------|
+| **前端** | Streamlit |
+| **解析** | PyMuPDF + PaddleOCR |
+| **向量** | bge-m3 + Chroma |
+| **检索** | BM25 + 向量混合（RRF 融合） |
+| **生成** | DeepSeek-V4-Pro |
+| **渲染** | 自研 SVG/PNG 引擎 |
+| **图谱** | pyvis (vis.js) |
+
+---
+
+## 📊 项目结构
+
+```
+v2.0/
+├── app.py                      # Streamlit 主界面
+├── preanswer.py               # 八字段精读档案生成
+├── roadmap.py                 # 研究路线图生成
+├── knowledge_graph.py         # 跨论文知识图谱
+├── structured_parser.py       # PDF 智能解析
+├── vector_store.py            # bge-m3 + Chroma
+├── retriever.py               # BM25 + 向量混合检索
+├── qa.py                      # 问答 + 溯源
+├── evaluate.py                # 评测体系
+├── config.py                  # 配置文件
+└── requirements.txt           # 依赖列表
 ```
 
-再启动界面：
+---
+
+## 🎓 WorkBuddy 专家包
+
+PaperPulse 已上线**腾讯 WorkBuddy 开放平台**，以专家包形式提供：
+
+🔗 **文献精读助手**：在 WorkBuddy 中搜索 "PaperPulse" 或 "文献精读"
+
+---
+
+## 📝 引用
+
+如果 PaperPulse 对你的研究有帮助，欢迎引用：
+
+```bibtex
+@software{paperpulse2026,
+  author = {Qin, Xiao},
+  title = {PaperPulse: Your Research Trace Weaver},
+  year = {2026},
+  url = {https://github.com/qinx672-png/research-ai-assistant}
+}
 ```
-streamlit run app.py
-```
 
-浏览器会自动打开 http://localhost:8501 ，上传几篇论文 PDF，开始提问。
+---
 
-## 四、常见问题
+## 📧 联系方式
 
-| 报错 | 原因 |
-|---|---|
-| 401 / 认证失败 | API Key 填错或没填 |
-| model not found | 去模型广场确认该模型已开通 |
-| PDF 提取不到文字 | 扫描版图片 PDF，需先 OCR，本 demo 暂不支持 |
-| 想改切块大小/检索数量 | 调 `rag.py` 里的 `chunk_size` / `top_k` |
+- **作者**：秦肖
+- **邮箱**：qx2024@sjtu.edu.cn
+- **机构**：上海交通大学 海洋学院
 
-## 五、项目结构
+---
 
-- `config.py`    配置（填 Key）
-- `rag.py`       核心逻辑（解析 → 切块 → 向量化 → 检索 → 生成）
-- `app.py`       Streamlit 界面
-- `test_api.py`  连通性自检
+## 📄 许可证
+
+MIT License
+
+---
+
+⭐ 如果觉得有用，请给个 Star！

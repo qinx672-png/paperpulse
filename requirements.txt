@@ -1,4 +1,11 @@
-streamlit
-pypdf
-numpy
-requests
+streamlit==1.61.1
+chromadb==1.5.9
+sentence-transformers==2.5.1
+PyMuPDF==1.23.26
+python-docx==1.2.0
+pandas==2.2.3
+numpy==1.26.4
+requests==2.31.0
+pillow==10.2.0
+pyvis==0.3.2
+rank-bm25==0.2.2

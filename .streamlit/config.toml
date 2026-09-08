@@ -1,0 +1,41 @@
+# 应用级配置（1.61.1 起 static 目录服务默认关闭，必须显式打开）
+# 用途：研究路线图 HTML 写到 static/ 下，用 st.iframe 走 /app/static/ 真实 URL 加载
+[server]
+enableStaticServing = true
+
+# ---------- 学术稳重主题（2026-09-06 界面美化第 1 步）----------
+# 主色：学术深蓝；辅助色：墨绿。整体低饱和、克制，匹配论文阅读场景。
+[theme]
+base = "light"
+primaryColor = "#1A4D80"              # 学术深蓝：按钮、链接、选中态
+backgroundColor = "#FBFCFD"           # 主背景：近白
+secondaryBackgroundColor = "#EEF2F7"  # 卡片 / 侧边栏底色：浅灰蓝
+textColor = "#1F2A37"                 # 正文：深灰蓝
+borderColor = "#D5DEE8"               # 边框
+baseRadius = "10px"                   # 圆角：比默认更圆润一点
+showWidgetBorder = false              # 输入框默认不描边，聚焦时才显示
+showSidebarBorder = true
+
+# 语义色：墨绿表示"正向/成功"，与深蓝主色呼应
+greenColor = "#2F6B4F"
+greenBackgroundColor = "#E4EFE9"
+greenTextColor = "#245338"
+
+# 图表色板：深蓝 → 墨绿 → 灰蓝 → 赭石，低饱和学术色系
+chartCategoricalColors = ["#1A4D80", "#2F6B4F", "#5B7C99", "#8C6D46", "#6B5B8C", "#4A6670", "#A1AEC0"]
+
+# 字体：只用系统字体栈（中文界面，Google Fonts 在国内加载慢，不用）
+font = "'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', sans-serif"
+headingFont = "'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', sans-serif"
+baseFontSize = 15
+headingFontSizes = ["28px", "22px", "18px", "16px", "15px", "13px"]
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+
+linkUnderline = false
+
+# 侧边栏独立配色：比主背景深一点的灰蓝，形成层次
+[theme.sidebar]
+backgroundColor = "#EEF2F7"
+secondaryBackgroundColor = "#E2E9F1"
+textColor = "#1F2A37"
+borderColor = "#D5DEE8"
